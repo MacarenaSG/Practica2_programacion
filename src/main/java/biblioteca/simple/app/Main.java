@@ -98,8 +98,18 @@ public class Main {
     private static void buscarPorTitulo(){
         System.out.println("Título (escribe parte del título): ");
         String t = sc.nextLine();
-        catalogo.buscar(t).forEach(p -> System.out.println("- " + p));
+
+        List<Producto> resultados = catalogo.buscar(t);
+
+        if (resultados.isEmpty()) {
+            System.out.println("No se encontraron productos con ese título.");
+            return;
+        }
+
+        System.out.println("Resultados:");
+        resultados.forEach(p -> System.out.println("- " + p));
     }
+
 
     private static void buscarPorAnio(){
         System.out.println("Año: ");
