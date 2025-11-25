@@ -182,6 +182,19 @@ public class Main {
         return nuevo;
     }
 
+    private static Usuario crearUsuarioConId(int id) {
+
+        System.out.println("Introduce el nombre del usuario: ");
+        String nombre = sc.nextLine();
+
+        Usuario nuevo = new Usuario(id, nombre);
+        usuarios.add(nuevo);
+
+        System.out.println("Usuario creado correctamente: " + nombre + " (código " + id + ")");
+
+        return nuevo;
+    }
+
 
     private static void prestar(){
 
@@ -225,8 +238,7 @@ public class Main {
         while (u1 == null) {
 
             listarUsuarios(); // mostramos lista actual
-            System.out.println("Ingresa código de usuario (id): ");
-            System.out.print("Sino eres ninguno de los de la lista teclea otro número para registrarte");
+            System.out.println("Ingresa código de usuario (id) o si no estás en la lista, escribe un número para registrarte: ");
             while (!sc.hasNextInt()) sc.next();
             int cUsuario = sc.nextInt();
             sc.nextLine();
@@ -240,8 +252,8 @@ public class Main {
 
                 if (resp.equals("s")) {
                     // Creamos el usuario nuevo y lo usamos en el préstamo
-                    // aquí podrías reutilizar el id introducido si quisieras)
-                    u1 = crearUsuario();
+                    // Utilizamos el id introducido. Asi el usuario solo necesita escribir el id una vez.
+                    u1 = crearUsuarioConId(cUsuario);
                 } else {
                     System.out.println("Volvamos a intentarlo. Introduce un código de usuario válido.");
                     // u1 sigue siendo null → el while se repite
@@ -268,7 +280,7 @@ public class Main {
                 .collect(Collectors.toList());
 
         if ( pPrestados.isEmpty() ) {
-            System.out.println("No hay productos para prestar");
+            System.out.println("No hay productos para devolver");
             return;
         }
 
