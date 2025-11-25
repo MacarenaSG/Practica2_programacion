@@ -3,6 +3,7 @@ package biblioteca.simple.app;
 import biblioteca.simple.contratos.Prestable;
 import biblioteca.simple.modelo.*;
 import biblioteca.simple.servicios.Catalogo;
+import biblioteca.simple.servicios.PersistenciaUsuarios;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
@@ -54,6 +55,8 @@ public class Main {
             System.out.println("5. Devolver Producto");
             System.out.println("6. Listar usuarios");
             System.out.println("7. Crear nuevo usuario");
+            System.out.println("8. Exportar usuarios");
+            System.out.println("9. Importar usuarios");
             System.out.println("0. Salir");
             while(!sc.hasNextInt()) sc.next();
             op = sc.nextInt();
@@ -68,7 +71,9 @@ public class Main {
                 case 5 -> devolver();
                 case 6 -> listarUsuarios();
                 case 7 -> crearUsuario();
-                case 0 -> System.out.println("Sayonara!");
+                case 8 -> exportarUsuarios();
+                case 9 -> importarUsuarios();
+                case 0 -> System.out.println("Hasta pronto!");
                 default -> System.out.println("Opción no válida");
             }
 
@@ -272,6 +277,30 @@ public class Main {
 
     }
 
+    // EXPORTAR USUARIOS A JSON
+    private static void exportarUsuarios() {
+        try {
+            PersistenciaUsuarios.exportar(usuarios);
+            System.out.println("Usuarios exportados correctamente al archivo usuarios.json");
+        } catch (Exception e) {
+            System.out.println("Error al exportar usuarios: " + e.getMessage());
+        }
+    }
+
+    // IMPORTAR USUARIOS DESDE JSON
+    private static void importarUsuarios() {
+        try {
+            List<Usuario> cargados = PersistenciaUsuarios.importar();
+
+            // Primero vaciamos la lista actual y luego metemos los cargados
+            usuarios.clear();
+            usuarios.addAll(cargados);
+
+            System.out.println("Usuarios importados correctamente desde usuarios.json");
+        } catch (Exception e) {
+            System.out.println("Error al importar usuarios: " + e.getMessage());
+        }
+    }
 
 
 }
