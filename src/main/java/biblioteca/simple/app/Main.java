@@ -90,10 +90,15 @@ public class Main {
 
         System.out.println("=== Lista de productos ===");
 
-        for(Producto p : lista) System.out.println("- " + p);
+        for (Producto p : lista) {
+            if (p instanceof Prestable pre && pre.estaPrestado()) {
+                continue;  // No mostrar productos prestados
+            }
 
-
+            System.out.println("- " + p);
+        }
     }
+
 
     private static void buscarPorTitulo(){
         System.out.println("Título (escribe parte del título): ");
