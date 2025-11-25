@@ -46,8 +46,8 @@ public class Main {
 
         do {
 
-            System.out.println("\n===Menú de Biblioteca===");
-            System.out.println("1. Listar");
+            System.out.println("\n=== Menú de Biblioteca ===");
+            System.out.println("1. Listar productos");
             System.out.println("2. Buscar por título");
             System.out.println("3. Buscar por año");
             System.out.println("4. Prestar Producto");
@@ -117,10 +117,41 @@ public class Main {
                 .orElse(null);
     }
 
+    // CREAR NUEVO USUARIO MANUALMENTE (código + nombre)
+    private static Usuario crearUsuario() {
+
+        System.out.println("== Crear nuevo usuario ==");
+
+        // Pedimos el código (id) del usuario
+        System.out.print("Introduce el código (id) del usuario: ");
+                while (!sc.hasNextInt()) sc.next();   // por si mete texto
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        // Comprobamos si ya existe un usuario con ese id
+        Usuario existente = getUsuarioPorCodigo(id);
+        if (existente != null) {
+            System.out.println("Ya existe un usuario con ese código: " + existente.getNombre());
+            return existente; // devolvemos el ya existente
+        }
+
+        // Pedimos el nombre
+        System.out.print("Introduce el nombre del usuario: ");
+        String nombre = sc.nextLine();
+
+        // Creamos y añadimos el nuevo usuario
+        Usuario nuevo = new Usuario(id, nombre);
+        usuarios.add(nuevo);
+
+        System.out.println("Usuario creado correctamente: " + nuevo.getNombre() + " (código " + nuevo.getId() + ")");
+
+        return nuevo;
+    }
+
+
     private static void prestar(){
 
-        // 1)mostrar productos disponibles
-
+        // 1) Mostrar productos disponibles (Prestable y NO prestados)
         List<Producto> disponibles = catalogo.listar().stream()
                 .filter(p -> p instanceof Prestable pN && !pN.estaPrestado())
                 .collect(Collectors.toList());
@@ -145,32 +176,54 @@ public class Main {
                         return false;
                     }
                 })
-
                 .findFirst()
                 .orElse(null);
 
-                 if (pEncontrado == null){
-                     System.out.println("El id no existe");
-                     return;
-                 }
+        if (pEncontrado == null){
+            System.out.println("El id no existe");
+            return;
+        }
 
+        // 2) SELECCIÓN DE USUARIO
+        Usuario u1 = null;
 
-                 listarUsuarios();
+        // Bucle hasta que tengamos un usuario válido
+        while (u1 == null) {
 
-                 System.out.println("Ingresa código de usurio");
+            listarUsuarios(); // mostramos lista actual
+            System.out.println("Ingresa código de usuario (id): ");
+            System.out.print("Sino eres ninguno de los de la lista teclea otro número para registrarte");
+            while (!sc.hasNextInt()) sc.next();
+            int cUsuario = sc.nextInt();
+            sc.nextLine();
 
-                 int cUsuario = sc.nextInt();
-                 sc.nextLine();
-                 Usuario u1 = getUsuarioPorCodigo(cUsuario);
+            u1 = getUsuarioPorCodigo(cUsuario);
 
-                 if (u1 == null){
-                     System.out.println("Usuari ono encontrado");
-                 }
+            if (u1 == null) {
+                System.out.println("Usuario no encontrado.");
+                System.out.println("¿Quieres crear un nuevo usuario con ese código? (s/n)");
+                String resp = sc.nextLine().trim().toLowerCase();
 
-                 Prestable pPrestable = (Prestable) pEncontrado;
-                 pPrestable.prestar(u1);
+                if (resp.equals("s")) {
+                    // Creamos el usuario nuevo y lo usamos en el préstamo
+                    // aquí podrías reutilizar el id introducido si quisieras)
+                    u1 = crearUsuario();
+                } else {
+                    System.out.println("Volvamos a intentarlo. Introduce un código de usuario válido.");
+                    // u1 sigue siendo null → el while se repite
+                }
+            }
+        }
 
+        // 3) Realizar el préstamo
+        Prestable pPrestable = (Prestable) pEncontrado;
+        pPrestable.prestar(u1);
+
+        System.out.println("Préstamo realizado correctamente.");
+        System.out.println("Producto: " + pEncontrado);
+        System.out.println("Usuario: " + u1.getNombre() + " (id " + u1.getId() + ")");
     }
+
 
 
     public static void devolver(){

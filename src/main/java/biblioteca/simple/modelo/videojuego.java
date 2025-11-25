@@ -20,7 +20,7 @@ public class Videojuego extends Producto implements Prestable {
         this.edadMinima = edadMinima;
     }
 
-    //CONSTRUCTOR SIN ID (por si se crean nuevos)
+    //CONSTRUCTOR SIN ID (por si se crean desde app)
     public Videojuego(String titulo, String anho, Formato formato,
                       String plataforma, int edadMinima) {
         super(titulo, anho, formato);
