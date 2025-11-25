@@ -52,6 +52,8 @@ public class Main {
             System.out.println("3. Buscar por año");
             System.out.println("4. Prestar Producto");
             System.out.println("5. Devolver Producto");
+            System.out.println("6. Listar usuarios");
+            System.out.println("7. Crear nuevo usuario");
             System.out.println("0. Salir");
             while(!sc.hasNextInt()) sc.next();
             op = sc.nextInt();
@@ -64,6 +66,8 @@ public class Main {
                 case 3 -> buscarPorAnio();
                 case 4 -> prestar();
                 case 5 -> devolver();
+                case 6 -> listarUsuarios();
+                case 7 -> crearUsuario();
                 case 0 -> System.out.println("Sayonara!");
                 default -> System.out.println("Opción no válida");
             }
