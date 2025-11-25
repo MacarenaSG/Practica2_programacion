@@ -17,8 +17,8 @@ public class PersistenciaUsuarios {
     private static final String FICHERO = "usuarios.json";
 
     // Objeto Gson para convertir entre Java y JSON
-    private static final Gson gson = new Gson();
-    //Para que no eaparezcan los usuarios en la misma linea
+    private static final Gson gson = new Gson().newBuilder().setPrettyPrinting().create();
+    //Para que no aparezcan los usuarios en la misma linea
 
     // EXPORTAR: guarda la lista de usuarios en usuarios.json
     public static void exportar(List<Usuario> usuarios) throws Exception {
