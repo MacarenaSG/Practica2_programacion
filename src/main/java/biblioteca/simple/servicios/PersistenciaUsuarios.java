@@ -3,6 +3,8 @@ package biblioteca.simple.servicios;
 import biblioteca.simple.modelo.Usuario;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.GsonBuilder;
+
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -17,8 +19,11 @@ public class PersistenciaUsuarios {
     private static final String FICHERO = "usuarios.json";
 
     // Objeto Gson para convertir entre Java y JSON
-    private static final Gson gson = new Gson().newBuilder().setPrettyPrinting().create();
-    //Para que no aparezcan los usuarios en la misma linea
+    private static final Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .create();
+    //Para que no aparezcan los usuarios en la misma línea de manera correcta según bibliografía
+    //https://www.vogella.com/tutorials/JavaLibrary-Gson/article.html
 
     // EXPORTAR: guarda la lista de usuarios en usuarios.json
     public static void exportar(List<Usuario> usuarios) throws Exception {
