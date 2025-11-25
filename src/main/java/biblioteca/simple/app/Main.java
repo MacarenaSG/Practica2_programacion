@@ -115,8 +115,18 @@ public class Main {
         System.out.println("Año: ");
         int a = sc.nextInt();
         sc.nextLine();
-        catalogo.buscar(a).forEach(p -> System.out.println("- " + p));
+
+        List<Producto> resultados = catalogo.buscar(a);
+
+        if (resultados.isEmpty()) {
+            System.out.println("No se encontraron productos del año " + a);
+            return;
+        }
+
+        System.out.println("Resultados:");
+        resultados.forEach(p -> System.out.println("- " + p));
     }
+
 
     private static void listarUsuarios(){
         if (usuarios.isEmpty()) {
